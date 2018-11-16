@@ -52,7 +52,7 @@ hiv.data<-hiv.data[complete.cases(hiv.data[,list(y,time,age.baseline,treatment)]
 
 1. Graph the outcome (the CD4 percentage, on the square root scale) for each child as a function of time.
 ```{r}
-plot(hiv.data$time,hiv.data$y,xlab="Time",ylab="CD4 percentage on square root scale")
+plot(hiv.data$time,hiv.data$y,xlab="Time",col=factor(hiv.data$newpid),ylab="CD4 percentage on square root scale")
 ```
 
 2. Each child's data has a time course that can be summarized by a linear fit. Estimate these lines and plot them for all the children.
@@ -61,10 +61,10 @@ plot(hiv.data$time,hiv.data$y,xlab="Time",ylab="CD4 percentage on square root sc
 q1m <- lm (y ~ time+factor(newpid)-1, data = hiv.data) #Varying Intercepts
 # display(m1)
 coef_q1m <- data.frame(coef(q1m))
-ggplot(data = hiv.data) + 
-  geom_point(aes(x=time, y=y)) + 
-  geom_abline(intercept = coef_q1m[1,], slope=coef_q1m[2:255,]) + 
-  labs(y="sqrt(CD4 Percentage)")
+ggplot(data = hiv.data,aes(x=time, y=y,colour=factor(newpid))) + 
+  geom_smooth(method="lm",se=FALSE,size=0.5) + 
+  theme(legend.position="none")
+
 ```
 
 
